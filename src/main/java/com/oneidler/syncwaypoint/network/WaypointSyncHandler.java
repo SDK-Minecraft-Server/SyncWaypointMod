@@ -46,7 +46,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
                     return;
                 }
                 try {
-                    writeWaypointsToXaero(payload.waypoints(),player);
+                    writeWaypointsToXaero(payload.waypoints());
                     try {
                         TimeUnit.MILLISECONDS.sleep(500);
                     } catch (InterruptedException e) {
@@ -93,7 +93,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
     /**
      * 将路径点写入 Xaero's Minimap 的 waypoints.txt
      */
-    private void writeWaypointsToXaero(List<WaypointPayload.Waypoint> waypoints , LocalPlayer player) throws IOException {
+    private void writeWaypointsToXaero(List<WaypointPayload.Waypoint> waypoints) throws IOException {
         Minecraft client = Minecraft.getInstance();
         File gameDir = client.gameDirectory;
 
@@ -130,7 +130,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
         }
 
         if (CollUtil.isEmpty(filenames)) {
-            throw new IOException("当前无路径点文件，请手动创建一个路径点");
+            filenames = Set.of("waypoints.txt");
         }
         //正常新玩家只循环一次
         for (String filename : filenames) {
@@ -141,6 +141,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
                 Path dimPath = xaeroDir.resolve(serverName).resolve(dimFolder);
                 Path waypointFile = dimPath.resolve(filename);
                 writeWaypointToFile(waypointFile, wp);
+
             }
         }
     }
