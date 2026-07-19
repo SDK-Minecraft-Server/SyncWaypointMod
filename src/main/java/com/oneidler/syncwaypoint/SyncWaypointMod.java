@@ -32,7 +32,12 @@ public class SyncWaypointMod implements ModInitializer, ClientModInitializer {
         log.info("SyncWaypointMod 初始化 (服务端)");
 
         // 注册服务端→客户端数据包类型
-        PayloadTypeRegistry.clientboundPlay().register(WaypointPayload.TYPE, WaypointPayload.STREAM_CODEC);
+        //#if MC < 260100
+        PayloadTypeRegistry.playS2C().register(WaypointPayload.TYPE, WaypointPayload.STREAM_CODEC);
+        //#else
+        //$$ PayloadTypeRegistry.clientboundPlay().register(WaypointPayload.TYPE, WaypointPayload.STREAM_CODEC);
+        //#endif
+
         // 注册命令
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             SyncCommand.register(dispatcher);

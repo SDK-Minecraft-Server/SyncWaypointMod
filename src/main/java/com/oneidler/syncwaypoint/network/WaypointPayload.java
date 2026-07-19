@@ -5,7 +5,11 @@ import lombok.Data;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+//#if MC >= 12111
+//$$ import net.minecraft.resources.Identifier;
+//#else
+import net.minecraft.resources.ResourceLocation;
+//#endif
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +18,11 @@ public record WaypointPayload(List<Waypoint> waypoints) implements CustomPacketP
 
     // 新版
     public static final CustomPacketPayload.Type<WaypointPayload> TYPE =
-            new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(SyncWaypointMod.MOD_ID, "waypoint_sync"));
+            //#if MC >= 12111
+            //$$ new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(SyncWaypointMod.MOD_ID, "waypoint_sync"));
+            //#else
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(SyncWaypointMod.MOD_ID, "waypoint_sync"));
+            //#endif
 
     public static final StreamCodec<FriendlyByteBuf, WaypointPayload> STREAM_CODEC =
             StreamCodec.of(WaypointPayload::write, WaypointPayload::read);

@@ -5,14 +5,10 @@ import com.oneidler.syncwaypoint.SyncWaypointMod;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.permissions.Permission;
-import net.minecraft.server.permissions.PermissionLevel;
-
 
 public class SyncCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("syncwp")
-                .requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ALL))) // 所有玩家可用
                 .executes(context -> {
                     CommandSourceStack source = context.getSource();
                     if (source.getPlayer() == null) {

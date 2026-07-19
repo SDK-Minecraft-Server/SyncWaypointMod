@@ -9,10 +9,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,13 +53,36 @@ public class WaypointSyncHandler implements ClientModInitializer {
                         log.error("thread sleep interrupted: {}", e.getMessage(), e);
                         throw new RuntimeException(e);
                     }
-                    player.sendOverlayMessage(
+                    //#if MC >= 260100
+                    //$$ player.sendOverlayMessage(
+                    //#endif
+                    //#if MC <= 12101
+                    player.sendSystemMessage(
+                    //#endif
+                    //#if MC > 12101 && MC < 260100
+                    //$$ player.displayClientMessage(
+                    //#endif
                             Component.literal("§a[同步] 已写入 " + payload.waypoints().size() + " 个路径点到 Xaero's Minimap，请重新进入服务器查看！")
+                            //#if MC > 12101 && MC < 260100
+                            //$$ , true
+                            //#endif
                     );
+
                 } catch (IOException e) {
                     log.error("写入路径点失败: {}", e.getMessage(), e);
+                    //#if MC >= 260100
+                    //$$ player.sendOverlayMessage(
+                    //#endif
+                    //#if MC <= 12101
                     player.sendSystemMessage(
+                    //#endif
+                    //#if MC > 12101 && MC < 260100
+                    //$$ player.displayClientMessage(
+                    //#endif
                             Component.literal("§c[同步] 写入路径点失败: " + e.getMessage())
+                            //#if MC > 12101 && MC < 260100
+                            //$$ , true
+                            //#endif
                     );
                 }
             });
@@ -130,7 +153,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
         // 读取已有路径点，避免重复
         Set<String> existing = new HashSet<>();
         if (Files.exists(file)) {
-            for (String line : Files.readAllLines(file)) {
+            for (String line : readAllLinesWithFallback(file)) {
                 if (line.startsWith("waypoint:")) {
                     String[] parts = line.split(":");
                     if (parts.length >= 6) {
@@ -158,8 +181,20 @@ public class WaypointSyncHandler implements ClientModInitializer {
                 color
         );
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file.toFile(), true))) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.toFile(), true), StandardCharsets.UTF_8))) {
             writer.write(line);
+        }
+    }
+
+    /**
+     * 读取文件所有行，优先 UTF-8，失败则回退到系统默认编码
+     */
+    private List<String> readAllLinesWithFallback(Path file) throws IOException {
+        try {
+            return Files.readAllLines(file, StandardCharsets.UTF_8);
+        } catch (MalformedInputException e) {
+            log.warn("waypoint 文件非 UTF-8 编码, 尝试系统默认编码: {}", file);
+            return Files.readAllLines(file, Charset.defaultCharset());
         }
     }
 
