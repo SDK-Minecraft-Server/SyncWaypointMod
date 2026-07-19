@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "syncwaypoint",
+  "version": "${version}",
+  "name": "SyncWaypoint",
+  "description": "手动同步 MCDR LocationAPI 路径点到 Xaero's Minimap",
+  "authors": [
+    "oneIdler"
+  ],
+  "contact": {},
+  "license": "CC0-1.0",
+  "icon": "assets/syncwaypoint/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.oneidler.syncwaypoint.SyncWaypointMod"
+    ],
+    "client": [
+      "com.oneidler.syncwaypoint.SyncWaypointMod",
+      "com.oneidler.syncwaypoint.network.WaypointSyncHandler"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
