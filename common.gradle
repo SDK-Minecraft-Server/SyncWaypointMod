@@ -1,7 +1,6 @@
 plugins {
     id("java-library")
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
-    id "com.github.breadmoirai.github-release" version "2.5.2"
 }
 
 final int mcVersion = project.mcVersion
@@ -161,18 +160,6 @@ publishMods {
         projectId = "PzY3zfVu"
         minecraftVersions.add(project.minecraft_version)
     }
-}
-
-githubRelease {
-    tagName = version
-    token = providers.environmentVariable("GITHUB_TOKEN")
-    owner = "SDK-Minecraft-Server"
-    repo = "SyncWaypointMod"
-    releaseAssets = fileTree("build/libs").matching {
-        include "*.jar"
-        exclude "*-sources.jar", "*-dev.jar", "*-shadow.jar", "*-slim.jar"
-    }
-    allowUploadToExisting = true
 }
 
 tasks.withType(JavaCompile) {
