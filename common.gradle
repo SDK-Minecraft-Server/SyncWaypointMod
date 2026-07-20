@@ -20,7 +20,7 @@ ext {
             if (System.getenv("PR_BUILD") != 'false') buildType = 'pr'
             buildNumber = System.getenv("GITHUB_RUN_NUMBER")
         }
-        String versionSuffix = (buildNumber != null ? "+${buildType}.${buildNumber}" : "")
+        String versionSuffix = (buildNumber != null ? "-${buildType}.${buildNumber}" : "")
         return versionSuffix
     }
 }
