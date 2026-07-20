@@ -164,6 +164,7 @@ publishMods {
 }
 
 githubRelease {
+    tagName = version
     token = providers.environmentVariable("GITHUB_TOKEN")
     owner = "SDK-Minecraft-Server"
     repo = "SyncWaypointMod"
