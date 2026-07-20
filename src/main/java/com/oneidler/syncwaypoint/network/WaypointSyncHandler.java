@@ -1,6 +1,6 @@
 package com.oneidler.syncwaypoint.network;
 
-import com.oneidler.syncwaypoint.utils.CollUtil;
+import com.oneidler.syncwaypoint.SyncWaypointMod;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -33,7 +33,6 @@ public class WaypointSyncHandler implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        log.info("客户端 WaypointSyncHandler 初始化开始");
         ClientPlayNetworking.registerGlobalReceiver(WaypointPayload.TYPE, (payload, context) -> {
             ClientLevel level = context.client().level;
 
@@ -62,14 +61,14 @@ public class WaypointSyncHandler implements ClientModInitializer {
                     //#if MC > 12101 && MC < 260100
                     //$$ player.displayClientMessage(
                     //#endif
-                            Component.literal("§a[同步] 已写入 " + payload.waypoints().size() + " 个路径点到 Xaero's Minimap，请重新进入服务器查看！")
+                            Component.translatable(SyncWaypointMod.MOD_ID + ".message.written", payload.waypoints().size())
                             //#if MC > 12101 && MC < 260100
                             //$$ , true
                             //#endif
                     );
 
                 } catch (IOException e) {
-                    log.error("写入路径点失败: {}", e.getMessage(), e);
+                    log.error("Failed to write waypoints: {}", e.getMessage(), e);
                     //#if MC >= 260100
                     //$$ player.sendOverlayMessage(
                     //#endif
@@ -79,7 +78,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
                     //#if MC > 12101 && MC < 260100
                     //$$ player.displayClientMessage(
                     //#endif
-                            Component.literal("§c[同步] 写入路径点失败: " + e.getMessage())
+                            Component.translatable(SyncWaypointMod.MOD_ID + ".message.write_failed", e.getMessage())
                             //#if MC > 12101 && MC < 260100
                             //$$ , true
                             //#endif
@@ -87,7 +86,6 @@ public class WaypointSyncHandler implements ClientModInitializer {
                 }
             });
         });
-        log.info("客户端路径点接收器已注册");
     }
 
     /**
@@ -99,9 +97,6 @@ public class WaypointSyncHandler implements ClientModInitializer {
 
         // 获取当前连接的服务器信息
         String serverName = getServerFolderName(client);
-        if (serverName == null) {
-            throw new IOException("无法获取当前服务器信息");
-        }
 
         // XaeroWaypoints 根目录
         Path xaeroDir = Paths.get(gameDir.getAbsolutePath(), "xaero", "minimap");
@@ -109,7 +104,9 @@ public class WaypointSyncHandler implements ClientModInitializer {
             Files.createDirectories(xaeroDir);
         }
 
-        Set<String> filenames = new HashSet<>(3);
+        Set<String> filenames1 = new HashSet<>(3);
+        Set<String> filenames2 = new HashSet<>(3);
+        Set<String> filenames3 = new HashSet<>(3);
 
         //获取三个维度下的所有路径点文件
         for (int i = -1; i < 2; i++) {
@@ -122,26 +119,30 @@ public class WaypointSyncHandler implements ClientModInitializer {
                     Set<String> dimFilenames = stream.filter(Files::isRegularFile)
                             .map(path -> path.getFileName().toString())
                             .collect(Collectors.toSet());
-                    filenames.addAll(dimFilenames);
+                    switch (i) {
+                        case -1 -> filenames1.addAll(dimFilenames);
+                        case 0 -> filenames2.addAll(dimFilenames);
+                        case 1 -> filenames3.addAll(dimFilenames);
+                    }
                 } catch (IOException e) {
                     log.error("IOException:{}", e.getMessage(), e);
                 }
             }
         }
-
-        if (CollUtil.isEmpty(filenames)) {
-            filenames = Set.of("waypoints.txt");
-        }
-        //正常新玩家只循环一次
-        for (String filename : filenames) {
-            // 按维度分组写入
-            for (WaypointPayload.Waypoint wp : waypoints) {
-                //正常也只会有一个文件，不会多次循环
-                String dimFolder = getDimensionFolder(wp.dimension);
-                Path dimPath = xaeroDir.resolve(serverName).resolve(dimFolder);
+        if (filenames1.isEmpty()) filenames1.add("waypoints.txt");
+        if (filenames2.isEmpty()) filenames2.add("waypoints.txt");
+        if (filenames3.isEmpty()) filenames3.add("waypoints.txt");
+        for (WaypointPayload.Waypoint wp : waypoints) {
+            Set<String> targetFiles = switch (wp.dimension) {
+                case -1 -> filenames1;
+                case 1 -> filenames3;
+                default -> filenames2;
+            };
+            String dimFolder = getDimensionFolder(wp.dimension);
+            Path dimPath = xaeroDir.resolve(serverName).resolve(dimFolder);
+            for (String filename : targetFiles) {
                 Path waypointFile = dimPath.resolve(filename);
                 writeWaypointToFile(waypointFile, wp);
-
             }
         }
     }
@@ -193,7 +194,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
         try {
             return Files.readAllLines(file, StandardCharsets.UTF_8);
         } catch (MalformedInputException e) {
-            log.warn("waypoint 文件非 UTF-8 编码, 尝试系统默认编码: {}", file);
+            log.warn("Waypoint file is not UTF-8 encoded, trying system default encoding: {}", file);
             return Files.readAllLines(file, Charset.defaultCharset());
         }
     }
