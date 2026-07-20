@@ -1,8 +1,8 @@
 name: Upload Release Asset
 on:
-  workflow_dispatch:
-  release:
-    types: [ published ]
+  push:
+    branches:
+      - release
 
 jobs:
   build:
