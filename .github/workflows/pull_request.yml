@@ -3,14 +3,17 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - releases/**
+      - release/**
+      - dev/**
     paths:
-      - gradle/scripts/**
       - src/**
+      - gradle/**
+      - versions/**
       - build.gradle
-      - dependencies.gradle
+      - common.gradle
       - gradle.properties
       - settings.gradle
+      - settings.json
 
 jobs:
   build:
