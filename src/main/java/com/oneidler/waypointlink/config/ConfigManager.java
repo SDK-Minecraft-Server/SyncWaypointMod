@@ -1,8 +1,8 @@
-package com.oneidler.syncwaypoint.config;
+package com.oneidler.waypointlink.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.oneidler.syncwaypoint.SyncWaypointMod;
+import com.oneidler.waypointlink.WaypointLinkMod;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -19,7 +19,7 @@ public class ConfigManager {
     private static final Path CONFIG_PATH =
             FabricLoader.getInstance()
                     .getConfigDir()
-                    .resolve(SyncWaypointMod.MOD_ID + ".json");
+                    .resolve(WaypointLinkMod.MOD_ID + ".json");
 
     public static ModConfig CONFIG = new ModConfig();
 

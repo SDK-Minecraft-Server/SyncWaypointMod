@@ -1,19 +1,18 @@
-package com.oneidler.syncwaypoint;
+package com.oneidler.waypointlink;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.oneidler.syncwaypoint.command.SyncCommand;
-import com.oneidler.syncwaypoint.config.ConfigManager;
-import com.oneidler.syncwaypoint.network.WaypointPayload;
-import com.oneidler.syncwaypoint.pojo.LocationMarkerWaypoint;
-import com.oneidler.syncwaypoint.utils.CollUtil;
+import com.oneidler.waypointlink.command.SyncCommand;
+import com.oneidler.waypointlink.config.ConfigManager;
+import com.oneidler.waypointlink.network.WaypointPayload;
+import com.oneidler.waypointlink.pojo.LocationMarkerWaypoint;
+import com.oneidler.waypointlink.utils.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -24,9 +23,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class SyncWaypointMod implements ModInitializer, ClientModInitializer {
+public class WaypointLinkMod implements ModInitializer, ClientModInitializer {
 
-    public static final String MOD_ID = "syncwaypoint";
+    public static final String MOD_ID = "waypointlink";
 
     @Override
     public void onInitialize() {
@@ -89,19 +88,19 @@ public class SyncWaypointMod implements ModInitializer, ClientModInitializer {
     public static void syncWaypointsToClient(ServerPlayer player) {
         if (!ServerPlayNetworking.canSend(player, WaypointPayload.TYPE)) {
             player.sendSystemMessage(
-                    Component.translatable(SyncWaypointMod.MOD_ID + ".message.client_not_installed"),
+                    Component.translatable(WaypointLinkMod.MOD_ID + ".message.client_not_installed"),
                     false
             );
             return;
         }
         List<WaypointPayload.Waypoint> waypoints = fetchWaypointsFromMCDR();
         if (waypoints == null || waypoints.isEmpty()) {
-            player.sendSystemMessage(Component.translatable(SyncWaypointMod.MOD_ID + ".message.no_waypoints"), false);
+            player.sendSystemMessage(Component.translatable(WaypointLinkMod.MOD_ID + ".message.no_waypoints"), false);
             return;
         }
         WaypointPayload payload = new WaypointPayload(waypoints);
         ServerPlayNetworking.send(player, payload);
-        player.sendSystemMessage(Component.translatable(SyncWaypointMod.MOD_ID + ".message.synced", waypoints.size()), false);
+        player.sendSystemMessage(Component.translatable(WaypointLinkMod.MOD_ID + ".message.synced", waypoints.size()), false);
     }
 
     @Override
