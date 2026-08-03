@@ -1,7 +1,7 @@
-package com.oneidler.syncwaypoint.command;
+package com.oneidler.waypointlink.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.oneidler.syncwaypoint.SyncWaypointMod;
+import com.oneidler.waypointlink.WaypointLinkMod;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -12,11 +12,11 @@ public class SyncCommand {
                 .executes(context -> {
                     CommandSourceStack source = context.getSource();
                     if (source.getPlayer() == null) {
-                        source.sendFailure(Component.translatable(SyncWaypointMod.MOD_ID + ".command.player"));
+                        source.sendFailure(Component.translatable(WaypointLinkMod.MOD_ID + ".command.player"));
                         return 0;
                     }
-                    source.sendSuccess(() -> Component.translatable(SyncWaypointMod.MOD_ID + ".command.sync"), false);
-                    SyncWaypointMod.syncWaypointsToClient(source.getPlayer());
+                    source.sendSuccess(() -> Component.translatable(WaypointLinkMod.MOD_ID + ".command.sync"), false);
+                    WaypointLinkMod.syncWaypointsToClient(source.getPlayer());
                     return 1;
                 })
         );

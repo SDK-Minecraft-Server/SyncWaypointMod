@@ -1,4 +1,4 @@
-package com.oneidler.syncwaypoint.config;
+package com.oneidler.waypointlink.config;
 
 import lombok.Data;
 

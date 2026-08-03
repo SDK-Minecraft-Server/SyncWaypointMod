@@ -1,4 +1,4 @@
-package com.oneidler.syncwaypoint.utils;
+package com.oneidler.waypointlink.utils;
 
 import java.util.Collection;
 import java.util.Map;

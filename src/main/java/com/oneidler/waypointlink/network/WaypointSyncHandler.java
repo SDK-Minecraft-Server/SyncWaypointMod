@@ -1,6 +1,6 @@
-package com.oneidler.syncwaypoint.network;
+package com.oneidler.waypointlink.network;
 
-import com.oneidler.syncwaypoint.SyncWaypointMod;
+import com.oneidler.waypointlink.WaypointLinkMod;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -61,7 +61,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
                     //#if MC > 12101 && MC < 260100
                     //$$ player.displayClientMessage(
                     //#endif
-                            Component.translatable(SyncWaypointMod.MOD_ID + ".message.written", payload.waypoints().size())
+                            Component.translatable(WaypointLinkMod.MOD_ID + ".message.written", payload.waypoints().size())
                             //#if MC > 12101 && MC < 260100
                             //$$ , true
                             //#endif
@@ -78,7 +78,7 @@ public class WaypointSyncHandler implements ClientModInitializer {
                     //#if MC > 12101 && MC < 260100
                     //$$ player.displayClientMessage(
                     //#endif
-                            Component.translatable(SyncWaypointMod.MOD_ID + ".message.write_failed", e.getMessage())
+                            Component.translatable(WaypointLinkMod.MOD_ID + ".message.write_failed", e.getMessage())
                             //#if MC > 12101 && MC < 260100
                             //$$ , true
                             //#endif

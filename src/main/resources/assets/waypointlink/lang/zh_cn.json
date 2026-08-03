@@ -1,0 +1,9 @@
+{
+  "waypointlink.command.player": "§c此命令只能由玩家执行",
+  "waypointlink.command.sync": "§e正在从 MCDR 获取路径点...",
+  "waypointlink.message.client_not_installed": "§e[同步] 你的客户端未安装 Waypoint Link，无法同步路径点",
+  "waypointlink.message.no_waypoints": "§e[同步] 没有从 MCDR 获取到路径点",
+  "waypointlink.message.synced": "§a[同步] 已发送 %s 个路径点到客户端",
+  "waypointlink.message.written": "§a[同步] 已写入 %s 个路径点到 Xaero's Minimap，请重新进入服务器查看！",
+  "waypointlink.message.write_failed": "§c[同步] 写入路径点失败: %s"
+}
