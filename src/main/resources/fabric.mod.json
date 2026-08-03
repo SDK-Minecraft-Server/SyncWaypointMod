@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "syncwaypoint",
+  "id": "waypointlink",
   "version": "${version}",
   "name": "${name}",
-  "description": "手动同步 MCDR LocationAPI 路径点到 Xaero's Minimap",
+  "description": "Sync waypoints from MCDR Location Marker to Xaero's Minimap. 手动同步 MCDR Location Marker 路径点到 Xaero's Minimap。",
   "authors": [
     "oneIdler",
     "renzaifei"
   ],
   "contact": {
-    "sources": "https://github.com/SDK-Minecraft-Server/SyncWaypointMod"
+    "sources": "https://github.com/SDK-Minecraft-Server/WaypointLink"
   },
   "license": "LGPLv3",
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.oneidler.syncwaypoint.SyncWaypointMod"
+      "com.oneidler.waypointlink.WaypointLinkMod"
     ],
     "client": [
-      "com.oneidler.syncwaypoint.SyncWaypointMod",
-      "com.oneidler.syncwaypoint.network.WaypointSyncHandler"
+      "com.oneidler.waypointlink.WaypointLinkMod",
+      "com.oneidler.waypointlink.network.WaypointSyncHandler"
     ]
   },
   "depends": {

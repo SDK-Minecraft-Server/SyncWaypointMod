@@ -1,0 +1,9 @@
+{
+  "waypointlink.command.player": "§cThis command can only be executed by a player",
+  "waypointlink.command.sync": "§eFetching waypoints from MCDR...",
+  "waypointlink.message.client_not_installed": "§e[Sync] Your client does not have Waypoint Link installed, unable to sync waypoints",
+  "waypointlink.message.no_waypoints": "§e[Sync] No waypoints received from MCDR",
+  "waypointlink.message.synced": "§a[Sync] Sent %s waypoints to client",
+  "waypointlink.message.written": "§a[Sync] Written %s waypoints to Xaero's Minimap, please rejoin the server to see them!",
+  "waypointlink.message.write_failed": "§c[Sync] Failed to write waypoints: %s"
+}

@@ -1,4 +1,4 @@
-# SyncWaypointMod
+# Waypoint Link
 
 智能同步 [Location Marker](https://mcdreforged.com/zh-CN/plugin/location_marker) 与 [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap) 的路径点。
 
@@ -14,7 +14,7 @@
 
 ### 2. 配置文件
 
-在服务端 `config/syncwaypoint.json` 中配置 Location Marker 的路径点存储路径，例如：
+在服务端 `config/waypointlink.json` 中配置 Location Marker 的路径点存储路径，例如：
 
 ```json
 {
@@ -26,7 +26,7 @@
 
 客户端需同时安装以下两个模组：
 
-- **SyncWaypointMod**（本模组）
+- **Waypoint Link**（本模组）
 - [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap)
 
 进入服务器后，在聊天栏输入 `/syncwp` 即可同步路径点。

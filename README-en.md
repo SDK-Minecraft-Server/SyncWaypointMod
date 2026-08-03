@@ -1,4 +1,4 @@
-# SyncWaypointMod
+# Waypoint Link
 
 Smart waypoint synchronization between [Location Marker](https://mcdreforged.com/zh-CN/plugin/location_marker) and [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap).
 
@@ -14,7 +14,7 @@ The server must have [MCDR](https://mcdreforged.com/zh-CN) installed with the [L
 
 ### 2. Config
 
-Configure the path to Location Marker's waypoint storage in the server's `config/syncwaypoint.json`:
+Configure the path to Location Marker's waypoint storage in the server's `config/waypointlink.json`:
 
 ```json
 {
@@ -26,7 +26,7 @@ Configure the path to Location Marker's waypoint storage in the server's `config
 
 The client must have both of the following mods installed:
 
-- **SyncWaypointMod** (this mod)
+- **Waypoint Link** (this mod)
 - [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap)
 
 After joining the server, run `/syncwp` in chat to sync waypoints.

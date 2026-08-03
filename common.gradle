@@ -126,7 +126,7 @@ processResources {
         expand([
                 "id"               : project.mod_id,
                 "version"          : fullModVersion,
-                "name"             : project.archives_base_name,
+                "name"             : project.mod_name,
                 "minecraft_support": project.minecraft_support_version,
                 "fabric_loader"    : project.loader_version
         ])
