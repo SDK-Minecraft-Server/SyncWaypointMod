@@ -1,12 +1,13 @@
 name: Upload Release Asset
 on:
-  push:
-    branches:
-      - release
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
   build:
-    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,8 +27,16 @@ jobs:
 
       - name: Build
         run: ./gradlew build
-
-      - name: Publish to Modrinth
-        run: ./gradlew publishMods --stacktrace
         env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CI_BUILD: 'false'
+
+      - name: Upload Release Assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mapfile -t jars < <(find versions -path '*/build/libs/*.jar' ! -name '*-sources.jar' | sort)
+          echo "Uploading ${#jars[@]} artifacts:"
+          printf '%s\n' "${jars[@]}"
+          gh release upload "${{ github.event.release.tag_name }}" "${jars[@]}" \
+            --repo "${{ github.repository }}" \
+            --clobber
